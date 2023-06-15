@@ -10,11 +10,13 @@
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
-    "mongoose": "^7.2.3"
+    "mongoose": "^7.2.3",
+    "swagger-ui-express": "^4.6.3",
+    "yamljs": "^0.3.0"
   },
   "scripts": {
     "start": "NODE_ENV=production node index.js",
-    "dev": "NODE_ENV=development nodemon index.js",
+    "dev": "NODE_ENV=development nodemon index.js --ext js,yaml,index.js ",
     "test": "vitest --run --reporter verbose"
   },
   "devDependencies": {

@@ -20,10 +20,17 @@ To deploy Lablabee API, you need the following services:
 ```
 APP_PORT_PROD={port}
 APP_PORT_DEV={port}
-using localhost or docker service name -- MONGODB_URL=mongodb://{ localhost || docker service name}:27017/LabLabee 
-using mongodb cloud -- MONGODB_URL=mongodb+srv://{username}:{password}@{cluster}/LabLabee?retryWrites=true&w=majority
+MONGODB_URL=mongodb://{ localhost || docker service name}:27017/LabLabee // using localhost or docker service name
+MONGODB_URL=mongodb+srv://{username}:{password}@{cluster}/LabLabee?retryWrites=true&w=majority // using mongodb cloud
 
 ```
 
-1. Run `yarn run dev` and the application will start at the designated port (default 3500 if not explicitly set) for development
-2. Run `yarn run start` and the application will start at the designated port (default 3000 if not explicitly set) for production
+1. Run `yarn run dev` and the application will start at the designated port (default 3500 if not explicitly set) for `development`
+2. Run `yarn run start` and the application will start at the designated port (default 3000 if not explicitly set) for `production`
+
+
+### Swagger UI 
+
+1. Go to `localhost:{PORT}/api-docs/` 
+2. There will be UI page with API'S
+3. Test it out

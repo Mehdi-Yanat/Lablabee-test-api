@@ -1,0 +1,361 @@
+openapi: 3.0.0
+info:
+  title: LabLabee API
+  version: 1.0.0
+paths:
+  /api/labs:
+    get:
+      summary: Get a list of labs
+      tags:
+        - Labs
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  lab:
+                    $ref: "#/components/schemas/Lab"
+        "500":
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+    post:
+      summary: Create a new lab
+      tags:
+        - Labs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LabDto"
+      responses:
+        "201":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Lab was created successfully!"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Error"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Name already exist try other one !"
+  /api/labs/{id}:
+    get:
+      summary: Get one lab
+      tags:
+        - Labs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lab
+          required: true
+          schema:
+            type: string
+          example: "6488951a7c139b0743ed04a6"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  labs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                      $ref: "#/components/schemas/Lab"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                      $ref: "#/components/schemas/Error"
+        "404":
+          description: Lab not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Lab not found to update!"
+    put:
+      summary: Update one lab
+      tags:
+        - Labs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lab
+          required: true
+          schema:
+            type: string
+          example: "6488951a7c139b0743ed04a6"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LabDto"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Lab was updated successfully!"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Error"
+        "404":
+          description: Lab not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Lab not found to update!"
+    delete:
+      summary: Delete one lab
+      tags:
+        - Labs
+      parameters:
+        - name: id
+          in: path
+          description: ID of the lab
+          required: true
+          schema:
+            type: string
+          example: "6488951a7c139b0743ed04a6"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Lab was deleted successfully!"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Error"
+        "404":
+          description: Lab not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Lab not found to delete!"
+  /health:
+    get:
+      summary: Check server health
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Server is healthy."
+  /health-database:
+    get:
+      summary: Check database health
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Database connection is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Database connection is healthy."
+        "500":
+          description: Database connection is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Database connection is unhealthy."
+
+components:
+  schemas:
+    LabDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        technology:
+          type: string
+          example: "technology"
+        start_date:
+          type: date
+          format: date-time
+          example: "YYYY-MM-DD"
+        end_date:
+          type: date
+          format: date-time
+          example: "YYYY-MM-DD"
+    Lab:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "6488951a7c139b0743ed04a6"
+        name:
+          type: string
+          example: "name"
+        technology:
+          type: string
+          example: "react"
+        start_date:
+          type: date
+          format: date-time
+          example: "2011-04-11T00:00:00.000Z"
+        end_date:
+          type: date
+          format: date-time
+          example: "2011-04-11T00:00:00.000Z"
+        __v:
+          type: integer
+          example: 0
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+        msg:
+          type: string
+        path:
+          type: string
+        location:
+          type: string

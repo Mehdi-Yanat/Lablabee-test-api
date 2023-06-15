@@ -3,9 +3,13 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require('mongoose')
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml'); // Path to your Swagger specification file
 
 // to have access the process.env
 dotenv.config();
+
 
 // setting port
 const port =
@@ -58,6 +62,8 @@ app.get('/health-database', async (req, res) => {
 const labsRouters = require("./src/routers/labs.routers");
 
 app.use("/api/labs", labsRouters);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // listen app on a port
 app.listen(port, () => {

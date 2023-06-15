@@ -85,7 +85,8 @@ exports.updateLab = async (req, res) => {
     })
 
     // handle error if something went wrong
-    if (!lab) throw new Error('Something went wrong!')
+    if (!lab) return handleError.handleValidationError(res, 'Lab not found to update!', 404)
+
 
 
     // return successfull message
@@ -119,7 +120,7 @@ exports.getOneLab = async (req, res) => {
     const lab = await Labs.findById(id)
 
     // handle error if something went wrong
-    if (!lab) throw new Error('Something went wrong!')
+    if (!lab) return handleError.handleValidationError(res, 'Lab not found !', 404)
 
 
     // return successfull message
@@ -175,7 +176,7 @@ exports.deleteLab = async (req, res) => {
     const lab = await Labs.findByIdAndDelete(id)
 
     // handle error if something went wrong
-    if (!lab) throw new Error('Something went wrong!')
+    if (!lab) return handleError.handleValidationError(res, 'Lab not found to delete!', 404)
 
 
     // return successfull message
