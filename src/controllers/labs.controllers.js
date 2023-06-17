@@ -14,7 +14,6 @@ exports.addLab = async (req, res) => {
     const { name, start_date, end_date } = req.body
 
     // check if name already exist in the db
-
     const isNameAlreadyExist = await Labs.findOne({
       name
     })
@@ -67,35 +66,41 @@ exports.updateLab = async (req, res) => {
 
     // check if name already exist in the db
 
-    const isNameAlreadyExist = await Labs.findOne({
-      name
-    })
+    const labWithSameName = await Labs.findOne({ name });
+    console.log('Lab with same name:', labWithSameName); // Add this console log
+
+    // checking if the lab with the same name exists and is not the current lab being updated
+    if (labWithSameName && labWithSameName._id.toString() !== id) {
+      console.log('Calling handleValidationError'); // Add this console log
+      return handleError.handleValidationError(
+        res,
+        'Name already exists, please try another one!',
+        409
+      );
+    } else {
+      const lab = await Labs.findByIdAndUpdate(
+        id,
+        {
+          name: labWithSameName ? labWithSameName.name : name,
+          technology,
+          start_date: new Date(start_date),
+          end_date: new Date(end_date)
+        },
+        { new: true } // returns the updated document
+      );
+
+      // handle error if something went wrong
+      if (!lab) return handleError.handleValidationError(res, 'Lab not found to update!', 404)
 
 
-    // checking if he is the owner of the name by using id
-    if (isNameAlreadyExist && isNameAlreadyExist?.id.toString() !== id)
-      return handleError.handleValidationError(res, 'Name already exist try other one !', 409)
+      // return successfull message
+      return res.status(200).json({
+        success: true,
+        message: 'Lab was updated successfully!'
+      })
+}
 
-
-    const lab = await Labs.findByIdAndUpdate(id, {
-      name: isNameAlreadyExist ? isNameAlreadyExist.name : name,
-      technology,
-      start_date: new Date(start_date),
-      end_date: new Date(end_date)
-    })
-
-    // handle error if something went wrong
-    if (!lab) return handleError.handleValidationError(res, 'Lab not found to update!', 404)
-
-
-
-    // return successfull message
-    return res.status(200).json({
-      success: true,
-      message: 'Lab was updated successfully!'
-    })
-
-  } catch (error) {
+} catch (error) {
     // catch any error and send it to client
     console.log(error.message);
     return res.status(500).json({
