@@ -22,6 +22,6 @@ const labsSchema = new mongoose.Schema({
   },
 });
 
-const Labs = mongoose.model("Labs", labsSchema);
 
-module.exports = Labs;
+module.exports = mongoose.models.Labs || mongoose.model("Labs", labsSchema);
+
