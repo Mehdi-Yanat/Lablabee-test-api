@@ -12,6 +12,8 @@ const expressResultValidation = (req, res) => {
 
     if (!error.isEmpty()) {
         return handleValidationError(res, error.array(), 400)
+    } else {
+        return null; // Add this return statement when there are no validation errors
     }
 }
 
