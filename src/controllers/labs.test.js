@@ -87,9 +87,6 @@ describe('GET /api/labs', () => {
         // mock lab
         Labs.find = vi.fn().mockResolvedValue(mockLabs);
 
-        // create res object
-
-
         // getLabs
         await getLabs({}, res);
 
@@ -108,9 +105,6 @@ describe('GET /api/labs', () => {
         // mock lab
         Labs.find = vi.fn().mockResolvedValue(mockEmptyLab);
 
-        // create res object
-
-
         // getLabs
         await getLabs({}, res);
 
@@ -127,9 +121,6 @@ describe('GET /api/labs', () => {
 
         // mock lab
         Labs.find = vi.fn().mockRejectedValueOnce(new Error('Database error'));
-
-        // create res object
-
 
         // getLabs
         await getLabs({}, res);
@@ -156,8 +147,6 @@ describe('GET /api/labs/{id}', () => {
 
         // mock lab
         Labs.findById = vi.fn().mockResolvedValueOnce(mockLab)
-
-        // create res object
 
 
         // create req object
@@ -186,8 +175,6 @@ describe('GET /api/labs/{id}', () => {
 
         // mock lab
         Labs.findById = vi.fn().mockResolvedValue(mockLab)
-
-        // create res object
 
 
         // create req object
@@ -230,12 +217,9 @@ describe('POST /api/labs/', () => {
     it('should return success message with a 201 status code', async () => {
 
         // @ts-ignore
-        // mock lab method
-        const mockCreate = vi.spyOn(Labs, 'create').mockResolvedValueOnce(labPayload);
-        const mockFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null);
-
-        // create res object
-
+        // spy lab method
+        const spyOnCreate = vi.spyOn(Labs, 'create').mockResolvedValueOnce(labPayload);
+        const spyOnFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null);
 
         // create req object
         const req = {
@@ -246,8 +230,8 @@ describe('POST /api/labs/', () => {
         await addLab(req, res);
 
         // expect
-        expect(mockFindOne).toHaveBeenCalled();
-        expect(mockCreate).toHaveBeenCalled();
+        expect(spyOnFindOne).toHaveBeenCalled();
+        expect(spyOnCreate).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(201)
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -266,11 +250,9 @@ describe('POST /api/labs/', () => {
         };
 
         // @ts-ignore
-        // mock lab method
-        const mockCreate = vi.spyOn(Labs, 'create').mockResolvedValueOnce(labPayload);
-        const mockFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(mockLab);
-
-        // create res object
+        // spy lab method
+        const spyOnCreate = vi.spyOn(Labs, 'create').mockResolvedValueOnce(labPayload);
+        const spyOnFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(mockLab);
 
 
         // create req object
@@ -283,8 +265,8 @@ describe('POST /api/labs/', () => {
 
 
         //expect
-        expect(mockFindOne).toHaveBeenCalled();
-        expect(mockCreate).not.toHaveBeenCalled();
+        expect(spyOnFindOne).toHaveBeenCalled();
+        expect(spyOnCreate).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(409)
         expect(res.json).toHaveBeenCalledWith({
             success: false,
@@ -341,8 +323,8 @@ describe('PUT /api/labs/{id}', () => {
     it('should return success message with a 200 status code', async () => {
 
         // spy on functions
-        const updateMock = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(mockLab)
-        const findOneMock = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null)
+        const spyOnupdate = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(mockLab)
+        const spyOnfindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null)
 
 
         // create req object 
@@ -357,8 +339,8 @@ describe('PUT /api/labs/{id}', () => {
         await updateLab(req, res)
 
         // expect 
-        expect(updateMock).toHaveBeenCalledOnce()
-        expect(findOneMock).toHaveBeenCalledOnce()
+        expect(spyOnupdate).toHaveBeenCalledOnce()
+        expect(spyOnfindOne).toHaveBeenCalledOnce()
         expect(res.status).toHaveBeenCalledWith(200)
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -375,8 +357,8 @@ describe('PUT /api/labs/{id}', () => {
         };
 
         // spy on functions
-        const mockFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(mockLab)
-        const mockFindById = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(null)
+        const spyOnFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(mockLab)
+        const spyOnFindById = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(null)
 
         // create req object 
         const req = {
@@ -390,8 +372,8 @@ describe('PUT /api/labs/{id}', () => {
         await updateLab(req, res)
 
         // expect 
-        expect(mockFindOne).toHaveBeenCalled()
-        expect(mockFindById).not.toHaveBeenCalled()
+        expect(spyOnFindOne).toHaveBeenCalled()
+        expect(spyOnFindById).not.toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledWith(409)
         expect(res.json).toHaveBeenCalledWith({
             success: false,
@@ -416,8 +398,8 @@ describe('PUT /api/labs/{id}', () => {
     it('should return error message with a 404 status code', async () => {
 
         // spy on functions
-        const mockFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null)
-        const mockFindById = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(null)
+        const spyOnFindOne = vi.spyOn(Labs, 'findOne').mockResolvedValueOnce(null)
+        const spyOnFindById = vi.spyOn(Labs, 'findByIdAndUpdate').mockResolvedValueOnce(null)
 
         // create req object 
         const req = {
@@ -431,8 +413,8 @@ describe('PUT /api/labs/{id}', () => {
         await updateLab(req, res)
 
         // expect 
-        expect(mockFindOne).toHaveBeenCalled()
-        expect(mockFindById).toHaveBeenCalled()
+        expect(spyOnFindOne).toHaveBeenCalled()
+        expect(spyOnFindById).toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledWith(404)
         expect(res.json).toHaveBeenCalledWith({
             success: false,
