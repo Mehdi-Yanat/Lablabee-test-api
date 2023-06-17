@@ -2,7 +2,7 @@
   "name": "lablabee-api",
   "version": "1.0.0",
   "description": "API that let users create , read , update and delete labs",
-  "main": "index.js",
+  "main": "server.js",
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -15,8 +15,8 @@
     "yamljs": "^0.3.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
-    "dev": "NODE_ENV=development nodemon index.js --ext js,yaml,index.js ",
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development nodemon server.js --ext js,yaml,server.js ",
     "test": "vitest --run --reporter verbose"
   },
   "devDependencies": {
