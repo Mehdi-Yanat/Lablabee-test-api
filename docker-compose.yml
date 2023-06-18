@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  api-dev:
+    container_name: lablabee-api-dev
+    build:
+      context: .
+      target: ${DOCKER_BUILD_TARGET:-development}
+    environment:
+      - APP_PORT_DEV=${APP_PORT_DEV}
+      - MONGODB_URL=${MONGODB_URL}
+    ports:
+      - "${APP_PORT_DEV}:${APP_PORT_DEV}"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+
+  api-prod:
+    container_name: lablabee-api-prod
+    build:
+      context: .
+      target: ${DOCKER_BUILD_TARGET:-production}
+    environment:
+      - APP_PORT_PROD=${APP_PORT_PROD}
+      - MONGODB_URL=${MONGODB_URL}
+    ports:
+      - "${APP_PORT_PROD}:${APP_PORT_PROD}"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
